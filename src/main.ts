@@ -1,6 +1,4 @@
 import { NestFactory } from '@nestjs/core';
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
-import { useContainer } from 'class-validator';
 
 import { AppModule } from './app.module';
 

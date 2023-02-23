@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { hashSync } from 'bcryptjs';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { plainToClass } from 'class-transformer';
+import { plainToClass, plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class UsersService {
@@ -32,19 +32,48 @@ export class UsersService {
     return plainToClass(CreateUserDto, newUser);
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    const users = await this.prisma.user.findMany();
+
+    return plainToInstance(CreateUserDto, users);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id,
+      },
+      include: { sales: true },
+    });
+    return plainToClass(CreateUserDto, user);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async findProfile(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      include: { sales: true },
+    });
+    return plainToClass(CreateUserDto, user);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const user = await this.prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        ...updateUserDto,
+      },
+    });
+
+    return plainToClass(UpdateUserDto, user);
+  }
+
+  async remove(id: string) {
+    const user = await this.prisma.user.delete({
+      where: {
+        id: id,
+      },
+    });
   }
 }

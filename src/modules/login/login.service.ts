@@ -2,7 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { LoginDTO } from './login.DTO';
 import * as jwt from 'jsonwebtoken';
-import { compare, compareSync } from 'bcryptjs';
+import { compare } from 'bcryptjs';
 
 @Injectable()
 export class LoginService {
@@ -16,7 +16,7 @@ export class LoginService {
     });
 
     if (!user) {
-      throw new HttpException('Creditals not match1', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Creditals not match', HttpStatus.BAD_REQUEST);
     }
 
     const verifyPassword = await compare(data.password, user.password);

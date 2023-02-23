@@ -24,17 +24,20 @@ model User {
 }
 
 model Sales {
-  id                String              @id @default(uuid())
-  carPlate          String              @unique
-  carBrand          String
-  checkinTime       DateTime            @default(now())
-  checkoutTime      DateTime?
-  paymentMethod     paymentMethod
-  price             Decimal?            @default(0)
-  sale_date         DateTime            @default(now())
-  userId            String
-  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  salesParkingSlots SalesParkingSlots[]
+  id            String        @id @default(uuid())
+  carPlate      String        @unique
+  carBrand      String
+  checkinTime   DateTime      @default(now())
+  checkoutTime  DateTime?
+  paymentMethod paymentMethod
+  price         Decimal?      @default(0)
+  sale_date     DateTime      @default(now())
+  userId        String
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parkingSlotId String
+  parkingSlot   ParkingSlot   @relation(fields: [parkingSlotId], references: [id])
+
+    @@map("sales")
 }
 
 enum paymentMethod {
@@ -48,21 +51,17 @@ model ParkingInfo {
   id          Int           @id @default(autoincrement())
   priceByHour Decimal
   parkingSlot ParkingSlot[]
+
+    @@map("parkingInfo")
 }
 
 model ParkingSlot {
-  id                String              @id @default(uuid())
-  number            Int
-  isAvaliable       Boolean             @default(true)
-  parkingInfoId     Int
-  parkingInfo       ParkingInfo         @relation(fields: [parkingInfoId], references: [id])
-  salesParkingSlots SalesParkingSlots[]
-}
-
-model SalesParkingSlots {
   id            String      @id @default(uuid())
-  saleId        String
-  parkingSlotId String
-  sale          Sales       @relation(fields: [saleId], references: [id], onDelete: Cascade)
-  parkingSlot   ParkingSlot @relation(fields: [parkingSlotId], references: [id], onDelete: Cascade)
+  number        Int
+  isAvaliable   Boolean     @default(true)
+  parkingInfoId Int
+  parkingInfo   ParkingInfo @relation(fields: [parkingInfoId], references: [id])
+  sales         Sales[]
+
+    @@map("parkingSlot")
 }
