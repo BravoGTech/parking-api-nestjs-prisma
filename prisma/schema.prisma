@@ -37,7 +37,7 @@ model Sales {
   parkingSlotId String
   parkingSlot   ParkingSlot   @relation(fields: [parkingSlotId], references: [id])
 
-    @@map("sales")
+  @@map("sales")
 }
 
 enum paymentMethod {
@@ -52,16 +52,16 @@ model ParkingInfo {
   priceByHour Decimal
   parkingSlot ParkingSlot[]
 
-    @@map("parkingInfo")
+  @@map("parkingInfo")
 }
 
 model ParkingSlot {
   id            String      @id @default(uuid())
-  number        Int
+  number        Int         @unique
   isAvaliable   Boolean     @default(true)
   parkingInfoId Int
   parkingInfo   ParkingInfo @relation(fields: [parkingInfoId], references: [id])
   sales         Sales[]
 
-    @@map("parkingSlot")
+  @@map("parkingSlot")
 }

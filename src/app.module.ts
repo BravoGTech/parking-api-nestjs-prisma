@@ -11,9 +11,11 @@ import { LoginModule } from './modules/login/login.module';
 import { VerifyUserExistsMiddleware } from './middlewares/verifyuserexists.middleware';
 import { PrismaService } from './prisma/prisma.service';
 import { PrismaModule } from './prisma/prisma.module';
+import { ParkingInfoModule } from './modules/parking-info/parking-info.module';
+import { ParkingSlotModule } from './modules/parking-slot/parking-slot.module';
 
 @Module({
-  imports: [PrismaModule, UsersModule, LoginModule],
+  imports: [PrismaModule, UsersModule, LoginModule, ParkingInfoModule, ParkingSlotModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

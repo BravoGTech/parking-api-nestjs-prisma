@@ -8,7 +8,11 @@ export class VerifyUserExistsMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const userId = req.params.id;
 
-    const user = this.prisma.user.findUnique({
+    if (userId === 'profile') {
+      return next();
+    }
+
+    const user = await this.prisma.user.findUnique({
       where: {
         id: userId,
       },

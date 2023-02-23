@@ -8,9 +8,9 @@ import {
   Delete,
   Req,
   UseGuards,
-  NotFoundException,
-  HttpStatus,
   HttpCode,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { UsersService } from './users.service';
@@ -26,6 +26,8 @@ export class UsersController {
 
   @Post()
   @HttpCode(201)
+  @UseGuards(AuthGuard, OnlyAdminGuard)
+  @UsePipes(new ValidationPipe({ forbidNonWhitelisted: true }))
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
@@ -51,6 +53,7 @@ export class UsersController {
 
   @Patch(':id')
   @UseGuards(AuthGuard, IsAdminOrOwnerGuard)
+  @UsePipes(new ValidationPipe({ forbidNonWhitelisted: true }))
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
