@@ -37,7 +37,7 @@ export class UsersController {
 
   @Post('/admin')
   @HttpCode(201)
-  @UsePipes(new ValidationPipe({ whitelist: true }))
+  // @UsePipes(new ValidationPipe({ whitelist: true }))
   createAdmin(@Body() createUserDto: CreateUserDto) {
     const newUser = this.usersService.create(createUserDto);
 
@@ -65,7 +65,7 @@ export class UsersController {
 
   @Patch(':id')
   @UseGuards(AuthGuard, IsAdminOrOwnerGuard)
-  @UsePipes(new ValidationPipe({ forbidNonWhitelisted: true }))
+  // @UsePipes(new ValidationPipe({ forbidNonWhitelisted: true }))
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }

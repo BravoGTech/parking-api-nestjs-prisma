@@ -1,33 +1,39 @@
-import { IsBoolean, IsEmail, IsOptional, IsString } from 'class-validator';
 import { PartialType } from '@nestjs/swagger';
-import { CreateUserDto } from './create-user.dto';
+import {
+  IsBoolean,
+  IsEmail,
+  IsOptional,
+  IsString,
+  IsNotEmpty,
+} from 'class-validator';
 import { Exclude } from 'class-transformer';
+import { CreateUserDto } from './create-user.dto';
 
-export class UpdateUserDto {
+export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsString()
-  @IsOptional()
-  username: string;
-
-  @IsString()
-  @IsOptional()
-  password: string;
+  @IsOptional({})
+  readonly username: string;
 
   @IsString()
   @IsOptional()
-  first_name: string;
+  readonly password: string;
 
   @IsString()
   @IsOptional()
-  last_name: string;
+  readonly first_name: string;
+
+  @IsString()
+  @IsOptional()
+  readonly last_name: string;
 
   @IsString()
   @IsOptional()
   @IsEmail()
-  email: string;
+  readonly email: string;
 
   @IsBoolean()
   @IsOptional()
-  isAdmin: boolean;
+  readonly isAdmin: boolean;
 }
 
 export class UserDataWithNoPassword extends UpdateUserDto {

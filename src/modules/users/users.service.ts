@@ -47,9 +47,12 @@ export class UsersService {
       where: {
         id,
       },
-      include: { sales: true },
+      include: {
+        sales: true,
+      },
     });
-    const { password, ...rest } = user;
+    const { password, isAdmin, ...rest } = user;
+
     return rest;
   }
 

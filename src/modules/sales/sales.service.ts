@@ -120,7 +120,11 @@ export class SalesService {
     return update;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} sale`;
+  async remove(id: string) {
+    await this.prisma.sales.delete({
+      where: {
+        id: id,
+      },
+    });
   }
 }

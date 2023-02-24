@@ -3,6 +3,7 @@ import {
   IsString,
   IsISO8601,
   IsDecimal,
+  isInt,
   ValidateIf,
   IsOptional,
 } from 'class-validator';
@@ -17,7 +18,6 @@ export class CreateSaleDto {
   carBrand: string;
 
   @IsNotEmpty()
-  @IsString()
   spotNumber: number;
 }
 

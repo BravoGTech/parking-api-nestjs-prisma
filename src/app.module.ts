@@ -14,6 +14,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ParkingInfoModule } from './modules/parking-info/parking-info.module';
 import { ParkingSlotModule } from './modules/parking-slot/parking-slot.module';
 import { SalesModule } from './modules/sales/sales.module';
+import { VerifySalsExistsMiddleware } from './middlewares/verifysalesexists.middleware';
+import { VerifySpotExistsMiddleware } from './middlewares/verifyspotexists.middleware';
 
 @Module({
   imports: [
@@ -32,5 +34,11 @@ export class AppModule implements NestModule {
     consumer
       .apply(VerifyUserExistsMiddleware)
       .forRoutes({ path: 'users/:id', method: RequestMethod.ALL });
+    consumer
+      .apply(VerifySpotExistsMiddleware)
+      .forRoutes({ path: 'sales', method: RequestMethod.POST });
+    consumer
+      .apply(VerifySalsExistsMiddleware)
+      .forRoutes({ path: 'sales/:id', method: RequestMethod.ALL });
   }
 }
