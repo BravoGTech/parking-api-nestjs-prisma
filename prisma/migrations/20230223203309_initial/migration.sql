@@ -1,39 +1,26 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "users" (
+    "id" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "first_name" TEXT NOT NULL,
+    "last_name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "isAdmin" BOOLEAN NOT NULL DEFAULT false,
 
-  - You are about to drop the `ParkingInfo` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `ParkingSlot` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Sales` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropForeignKey
-ALTER TABLE "ParkingSlot" DROP CONSTRAINT "ParkingSlot_parkingInfoId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Sales" DROP CONSTRAINT "Sales_parkingSlotId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Sales" DROP CONSTRAINT "Sales_userId_fkey";
-
--- DropTable
-DROP TABLE "ParkingInfo";
-
--- DropTable
-DROP TABLE "ParkingSlot";
-
--- DropTable
-DROP TABLE "Sales";
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "sales" (
     "id" TEXT NOT NULL,
     "carPlate" TEXT NOT NULL,
     "carBrand" TEXT NOT NULL,
-    "checkinTime" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "checkinTime" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "checkoutTime" TIMESTAMP(3),
-    "paymentMethod" "paymentMethod" NOT NULL,
-    "price" DECIMAL(65,30) DEFAULT 0,
-    "sale_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "paymentMethod" TEXT,
+    "price" DECIMAL(65,30),
+    "sale_date" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "userId" TEXT NOT NULL,
     "parkingSlotId" TEXT NOT NULL,
 
@@ -59,7 +46,10 @@ CREATE TABLE "parkingSlot" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "sales_carPlate_key" ON "sales"("carPlate");
+CREATE UNIQUE INDEX "users_username_key" ON "users"("username");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "parkingSlot_number_key" ON "parkingSlot"("number");
 
 -- AddForeignKey
 ALTER TABLE "sales" ADD CONSTRAINT "sales_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

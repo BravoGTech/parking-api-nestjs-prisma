@@ -13,9 +13,17 @@ import { PrismaService } from './prisma/prisma.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { ParkingInfoModule } from './modules/parking-info/parking-info.module';
 import { ParkingSlotModule } from './modules/parking-slot/parking-slot.module';
+import { SalesModule } from './modules/sales/sales.module';
 
 @Module({
-  imports: [PrismaModule, UsersModule, LoginModule, ParkingInfoModule, ParkingSlotModule],
+  imports: [
+    PrismaModule,
+    UsersModule,
+    LoginModule,
+    ParkingInfoModule,
+    ParkingSlotModule,
+    SalesModule,
+  ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
@@ -23,6 +31,6 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(VerifyUserExistsMiddleware)
-      .forRoutes({ path: 'users/:id', method: RequestMethod.GET });
+      .forRoutes({ path: 'users/:id', method: RequestMethod.ALL });
   }
 }

@@ -24,27 +24,20 @@ model User {
 }
 
 model Sales {
-  id            String        @id @default(uuid())
-  carPlate      String        @unique
+  id            String      @id @default(uuid())
+  carPlate      String
   carBrand      String
-  checkinTime   DateTime      @default(now())
+  checkinTime   DateTime?   @default(now())
   checkoutTime  DateTime?
-  paymentMethod paymentMethod
-  price         Decimal?      @default(0)
-  sale_date     DateTime      @default(now())
+  paymentMethod String?
+  price         Decimal?
+  sale_date     DateTime?   @default(now())
   userId        String
-  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   parkingSlotId String
-  parkingSlot   ParkingSlot   @relation(fields: [parkingSlotId], references: [id])
+  parkingSlot   ParkingSlot @relation(fields: [parkingSlotId], references: [id])
 
   @@map("sales")
-}
-
-enum paymentMethod {
-  PIX
-  CC
-  CD
-  DIN
 }
 
 model ParkingInfo {

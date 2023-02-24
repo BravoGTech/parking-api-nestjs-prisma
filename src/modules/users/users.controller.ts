@@ -1,3 +1,4 @@
+import { plainToClass } from 'class-transformer';
 import {
   Controller,
   Get,
@@ -14,7 +15,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, UserDataWithNoPassword } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from 'src/guard/auth.guard';
 import { IsAdminOrOwnerGuard } from 'src/guard/isAdminOrOwner.guard';
@@ -27,9 +28,20 @@ export class UsersController {
   @Post()
   @HttpCode(201)
   @UseGuards(AuthGuard, OnlyAdminGuard)
-  @UsePipes(new ValidationPipe({ forbidNonWhitelisted: true }))
+  @UsePipes(new ValidationPipe({ whitelist: true }))
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    const newUser = this.usersService.create(createUserDto);
+
+    return plainToClass(UserDataWithNoPassword, newUser);
+  }
+
+  @Post('/admin')
+  @HttpCode(201)
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  createAdmin(@Body() createUserDto: CreateUserDto) {
+    const newUser = this.usersService.create(createUserDto);
+
+    return plainToClass(UserDataWithNoPassword, newUser);
   }
 
   @Get()

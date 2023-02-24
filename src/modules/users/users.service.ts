@@ -1,7 +1,11 @@
 import { PrismaService } from './../../prisma/prisma.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { hashSync } from 'bcryptjs';
-import { CreateUserDto } from './dto/create-user.dto';
+import {
+  CreateUserDto,
+  UserDataWithNoPassword,
+  UserWithSales,
+} from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { plainToClass, plainToInstance } from 'class-transformer';
 
@@ -29,13 +33,13 @@ export class UsersService {
       },
     });
 
-    return plainToClass(CreateUserDto, newUser);
+    return newUser;
   }
 
   async findAll() {
     const users = await this.prisma.user.findMany();
 
-    return plainToInstance(CreateUserDto, users);
+    return plainToInstance(UserDataWithNoPassword, users);
   }
 
   async findOne(id: string) {
@@ -45,7 +49,8 @@ export class UsersService {
       },
       include: { sales: true },
     });
-    return plainToClass(CreateUserDto, user);
+    const { password, ...rest } = user;
+    return rest;
   }
 
   async findProfile(id: string) {
@@ -53,7 +58,9 @@ export class UsersService {
       where: { id },
       include: { sales: true },
     });
-    return plainToClass(CreateUserDto, user);
+
+    const { password, ...rest } = user;
+    return rest;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
@@ -66,11 +73,11 @@ export class UsersService {
       },
     });
 
-    return plainToClass(UpdateUserDto, user);
+    return plainToInstance(UserDataWithNoPassword, user);
   }
 
   async remove(id: string) {
-    const user = await this.prisma.user.delete({
+    await this.prisma.user.delete({
       where: {
         id: id,
       },
