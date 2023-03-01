@@ -1,12 +1,4 @@
-import {
-  IsNotEmpty,
-  IsString,
-  IsISO8601,
-  IsDecimal,
-  isInt,
-  ValidateIf,
-  IsOptional,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsISO8601, IsDecimal } from 'class-validator';
 
 export class CreateSaleDto {
   @IsNotEmpty()

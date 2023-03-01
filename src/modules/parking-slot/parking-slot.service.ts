@@ -32,7 +32,14 @@ export class ParkingSlotService {
   }
 
   async findAll() {
-    const slots = this.prisma.parkingSlot.findMany();
+    const slots = this.prisma.parkingSlot.findMany({
+      include: {
+        sales: true,
+      },
+      orderBy: {
+        number: 'asc',
+      },
+    });
 
     return slots;
   }

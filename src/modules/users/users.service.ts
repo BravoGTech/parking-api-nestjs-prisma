@@ -1,13 +1,9 @@
 import { PrismaService } from './../../prisma/prisma.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { hashSync } from 'bcryptjs';
-import {
-  CreateUserDto,
-  UserDataWithNoPassword,
-  UserWithSales,
-} from './dto/create-user.dto';
+import { CreateUserDto, UserDataWithNoPassword } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { plainToClass, plainToInstance } from 'class-transformer';
+import { plainToInstance, plainToClass } from 'class-transformer';
 
 @Injectable()
 export class UsersService {
@@ -29,6 +25,7 @@ export class UsersService {
     const newUser = await this.prisma.user.create({
       data: {
         ...data,
+        isAdmin: false,
         password: hashedPassword,
       },
     });

@@ -65,7 +65,6 @@ export class UsersController {
 
   @Patch(':id')
   @UseGuards(AuthGuard, IsAdminOrOwnerGuard)
-  // @UsePipes(new ValidationPipe({ forbidNonWhitelisted: true }))
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }

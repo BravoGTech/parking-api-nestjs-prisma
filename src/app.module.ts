@@ -16,6 +16,7 @@ import { ParkingSlotModule } from './modules/parking-slot/parking-slot.module';
 import { SalesModule } from './modules/sales/sales.module';
 import { VerifySalsExistsMiddleware } from './middlewares/verifysalesexists.middleware';
 import { VerifySpotExistsMiddleware } from './middlewares/verifyspotexists.middleware';
+import { SpotNumberAlreadyExistsMiddleware } from './middlewares/spotNumberAlreadyExists.middleware';
 
 @Module({
   imports: [
@@ -34,6 +35,9 @@ export class AppModule implements NestModule {
     consumer
       .apply(VerifyUserExistsMiddleware)
       .forRoutes({ path: 'users/:id', method: RequestMethod.ALL });
+    consumer
+      .apply(SpotNumberAlreadyExistsMiddleware)
+      .forRoutes({ path: 'parking-slot/:id', method: RequestMethod.PATCH });
     consumer
       .apply(VerifySpotExistsMiddleware)
       .forRoutes({ path: 'sales', method: RequestMethod.POST });

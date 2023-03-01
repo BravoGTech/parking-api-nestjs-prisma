@@ -1,11 +1,5 @@
 import { PartialType } from '@nestjs/swagger';
-import {
-  IsBoolean,
-  IsEmail,
-  IsOptional,
-  IsString,
-  IsNotEmpty,
-} from 'class-validator';
+import { IsBoolean, IsEmail, IsOptional, IsString } from 'class-validator';
 import { Exclude } from 'class-transformer';
 import { CreateUserDto } from './create-user.dto';
 
