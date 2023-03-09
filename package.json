@@ -35,6 +35,9 @@
     "swagger-ui-express": "^4.6.0",
     "zod": "^3.20.6"
   },
+  "engines": {
+    "node": "14.20.0"
+  },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
