@@ -31,7 +31,7 @@ export class ParkingSlotController {
   }
 
   @Get()
-  @UseGuards(AuthGuard, OnlyAdminGuard)
+  @UseGuards(AuthGuard)
   findAll() {
     return this.parkingSlotService.findAll();
   }

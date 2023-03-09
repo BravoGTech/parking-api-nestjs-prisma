@@ -97,6 +97,9 @@ export class SalesService {
 
     const { priceByHour } = parkingInfo;
 
+    const basePrice = +priceByHour;
+    const additionalPricePerHour = 2;
+
     const checkIn = new Date(checkinTime);
     const checkout = new Date();
 
@@ -104,7 +107,15 @@ export class SalesService {
 
     const diffInHours = diffInMilliseconds / (1000 * 60 * 60);
 
-    const newPrice = diffInHours * +priceByHour;
+    let newPrice = Math.ceil(diffInHours * +basePrice);
+
+    if (newPrice <= +priceByHour) {
+      newPrice = +priceByHour;
+    }
+
+    for (let i = 1; i < diffInHours; i++) {
+      newPrice += additionalPricePerHour;
+    }
 
     const update = await this.prisma.sales.update({
       where: {
@@ -114,6 +125,15 @@ export class SalesService {
         checkoutTime: checkout,
         price: newPrice,
         paymentMethod: updateSaleDto.paymentMethod,
+      },
+    });
+
+    await this.prisma.parkingSlot.update({
+      where: {
+        id: parkingSlotId,
+      },
+      data: {
+        isAvaliable: true,
       },
     });
 
