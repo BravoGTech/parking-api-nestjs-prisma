@@ -8,7 +8,13 @@ export class VerifyUserExistsMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const userId = req.params.id;
 
+    console.log(userId);
+
     if (userId === 'profile') {
+      return next();
+    }
+
+    if (userId === 'admin') {
       return next();
     }
 
