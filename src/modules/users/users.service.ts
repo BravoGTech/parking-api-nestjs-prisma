@@ -33,6 +33,30 @@ export class UsersService {
     return newUser;
   }
 
+  async createAdmin(data: CreateUserDto) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        email: data.email,
+      },
+    });
+
+    if (user) {
+      throw new HttpException('User already exists', HttpStatus.CONFLICT);
+    }
+
+    const hashedPassword = hashSync(data.password, 10);
+
+    const newUser = await this.prisma.user.create({
+      data: {
+        ...data,
+        isAdmin: true,
+        password: hashedPassword,
+      },
+    });
+
+    return newUser;
+  }
+
   async findAll() {
     const users = await this.prisma.user.findMany();
 

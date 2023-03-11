@@ -37,9 +37,8 @@ export class UsersController {
 
   @Post('/admin')
   @HttpCode(201)
-  // @UsePipes(new ValidationPipe({ whitelist: true }))
   createAdmin(@Body() createUserDto: CreateUserDto) {
-    const newUser = this.usersService.create(createUserDto);
+    const newUser = this.usersService.createAdmin(createUserDto);
 
     return plainToClass(UserDataWithNoPassword, newUser);
   }
