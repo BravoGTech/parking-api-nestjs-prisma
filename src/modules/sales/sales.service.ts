@@ -98,7 +98,7 @@ export class SalesService {
     const { priceByHour } = parkingInfo;
 
     const basePrice = +priceByHour;
-    const additionalPricePerHour = 2;
+    const additionalPricePerHour = basePrice;
 
     const checkIn = new Date(checkinTime);
     const checkout = new Date();
