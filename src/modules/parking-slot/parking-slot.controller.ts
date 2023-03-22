@@ -36,6 +36,13 @@ export class ParkingSlotController {
     return this.parkingSlotService.findAll();
   }
 
+  @Get('/spot/:id')
+  @UseGuards(AuthGuard, IsAdminOrOwnerGuard)
+  findSpot(@Param('id') id: string) {
+    console.log(id);
+    return this.parkingSlotService.findSpot(id);
+  }
+
   @Get(':number')
   @UseGuards(AuthGuard, IsAdminOrOwnerGuard)
   findOne(@Param('number') number: string) {

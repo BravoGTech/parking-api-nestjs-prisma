@@ -58,6 +58,16 @@ export class ParkingSlotService {
     return slot;
   }
 
+  async findSpot(spotId: string) {
+    const spot = await this.prisma.parkingSlot.findUnique({
+      where: {
+        id: spotId,
+      },
+    });
+
+    return spot;
+  }
+
   async update(id: string, updateParkingSlotDto: UpdateParkingSlotDto) {
     const spot = await this.prisma.parkingSlot.update({
       where: {
