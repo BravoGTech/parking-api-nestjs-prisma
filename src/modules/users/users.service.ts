@@ -1,3 +1,4 @@
+import { ParkingSlot } from './../parking-slot/entities/parking-slot.entity';
 import { PrismaService } from './../../prisma/prisma.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { hashSync } from 'bcryptjs';
@@ -69,9 +70,14 @@ export class UsersService {
         id,
       },
       include: {
-        sales: true,
+        sales: {
+          include: {
+            parkingSlot: true,
+          },
+        },
       },
     });
+
     const { password, isAdmin, ...rest } = user;
 
     return rest;
