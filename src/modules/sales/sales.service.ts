@@ -98,7 +98,7 @@ export class SalesService {
     const { priceByHour } = parkingInfo;
 
     const basePrice = +priceByHour;
-    const additionalPricePerHour = basePrice;
+    // const additionalPricePerHour = basePrice;
 
     const checkIn = new Date(checkinTime);
     const checkout = new Date();
@@ -113,9 +113,9 @@ export class SalesService {
       newPrice = +priceByHour;
     }
 
-    for (let i = 1; i < diffInHours; i++) {
-      newPrice += additionalPricePerHour;
-    }
+    // for (let i = 1; i < diffInHours; i++) {
+    //   newPrice += additionalPricePerHour;
+    // }
 
     const update = await this.prisma.sales.update({
       where: {
